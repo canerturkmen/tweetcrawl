@@ -1,1 +1,7 @@
-This file was created by PyCharm 2.6.3 for binding GitHub repository
+## tweetcrawl
+
+tweetcrawl is intented as a twitter user, status and follow links crawler that links with Twitter over python-twitter and stores information in a MongoDB instance.
+
+Currently, the project is a stub and crawl scheduling will be added in order to manage the rate limits enforced by Twitter.
+
+The github repo lacks a `config.py` file which defines some globals necessary for running the project. If you'd like to build, just contact me over **github** or [e-mail](turkmen.ac@gmail.com) me.
