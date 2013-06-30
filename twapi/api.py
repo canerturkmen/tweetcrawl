@@ -24,7 +24,7 @@ class TwCrawlAPI:
         elif type(user) is int:
             result=self._api.GetUser(user_id=user)
 
-        return str(result)
+        return result
 
     def getUserFollowers(self, user):
         if type(user) is str:
@@ -36,4 +36,7 @@ class TwCrawlAPI:
 
     def getRateLimitStatus(self):
         return self._api.GetRateLimitStatus()
+
+    def getUserTweets(self):
+        return self._api.GetUserTimeline()
 

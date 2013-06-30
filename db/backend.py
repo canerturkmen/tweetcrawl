@@ -26,9 +26,9 @@ class DBConnection:
         Persists a python-twitter User object in the MongoDB database
         :type user: twitter.User
         """
-        if type(user) is twitter.User:
+        if type(user) is dict:
             table = cls.getInstance().twcrawl.users
-            return table.insert(user.AsDict())
+            return table.insert(user)
         else:
             return False
 
@@ -72,3 +72,11 @@ class DBConnection:
             table.insert(hash)
         except:
             pass #TODO: Revise!
+
+    @classmethod
+    def getTablesCounts(cls):
+        db = cls.getInstance().twcrawl
+        result = {}
+        for coll in db.collection_names():
+            result[coll] = db[coll].count()
+        return result
