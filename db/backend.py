@@ -10,7 +10,7 @@ class DBConnection:
 
     _instance = None
 
-    @staticmethod
+    @classmethod
     def getInstance(cls):
         if cls._instance is None:
             try:
@@ -20,21 +20,33 @@ class DBConnection:
 
         return cls._instance
 
+    @classmethod
     def persistUser(cls, user):
+        """
+        Persists a python-twitter User object in the MongoDB database
+        :type user: twitter.User
+        """
         if type(user) is twitter.User:
-            table = cls.getInstance().users
+            table = cls.getInstance().twcrawl.users
             return table.insert(user.AsDict())
         else:
             return False
 
+    @classmethod
     def persistStatus(cls, status):
         """
-        Persists a python-twitter Status object in the
+        Persists a python-twitter Status object in the MongoDB database
+
+        Params:
+        :type status: twitter.Status
+        status: the twitter.Status object to be saved in the database
+
+        Returns:
+        false, or the mongodb document reference if persist successful
         """
         if type(status) is twitter.Status:
-            table = cls.getInstance().tweets
-            return table.insert(tweet.AsDict())
+            table = cls.getInstance().twcrawl.tweets
+            return table.insert(status.AsDict())
         else:
             return False
-
 
