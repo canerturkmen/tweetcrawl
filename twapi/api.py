@@ -28,9 +28,9 @@ class TwCrawlAPI:
 
     def getUserFollowers(self, user):
         if type(user) is str:
-            result = self._api.GetFollowers(screen_name=user)
+            result = self._api.GetFollowers(screen_name=user, skip_status=True, include_user_entities=True)
         elif type(user) is int:
-            result = self._api.GetFollowers(user_id=user)
+            result = self._api.GetFollowers(user_id=user, skip_status=True, include_user_entities=True)
 
         return result
 

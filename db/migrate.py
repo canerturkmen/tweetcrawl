@@ -11,13 +11,13 @@ from config import MONGODB_HOST, MONGODB_PORT
 client = MongoClient(MONGODB_HOST, MONGODB_PORT)
 
 # create database if not exists
-db = client['twcrawl']
+db = client.twcrawl
 
 # create the collections required
-db['tweets']
-db['users']
-db['followlinks']
-db['hashtags']
+tw = db['tweets']
+us = db['users']
+fl = db['followlinks']
+ht = db['hashtags']
 
 # create ensureIndex constraints
 

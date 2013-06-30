@@ -1,4 +1,4 @@
-from datetime import datetime
+from config import USER_FIELDS
 from twapi.api import TwCrawlAPI
 from twitter import TwitterError
 from db.backend import DBConnection
@@ -17,13 +17,15 @@ class BaseCrawler:
         self._api = TwCrawlAPI()
 
     def run(self):
+        currentId = 20505706
         self._logger.info("Initializing run for BaseCrawler")
         try:
-            followers = self._api.getUserFollowers("canerturkmen")
+            followers = self._api.getUserFollowers(currentId)
             for i in followers:
-                self._db.persistUser(i)
-                print str(i.AsDict())
-                break
+                self._db.persistUser({key: i[key] for key in USER_FIELDS})
+                self._db.persistFollowLink(i['id'], currentId)
+#                except:
+#                    self._logger.warning("Error encountered. Possibly index related.")
 
         except TwitterError as e:
             self._logger.error("TwitterError encountered.")

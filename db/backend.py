@@ -50,3 +50,25 @@ class DBConnection:
         else:
             return False
 
+    @classmethod
+    def persistFollowLink(cls, follower, friend):
+        """
+        Persists a 'follow-link', a directed arc of the social graph in Twitter, originating from the
+        follower to the followed.
+
+        Params:
+        follower -- int, the twitter user id of the follower
+        friend -- int, twitter user id of the user who is followed
+
+        Returns:
+        nothing
+        """
+
+        if type(follower) is not int or type(friend) is not int:
+            raise TypeError
+        table = cls.getInstance().twcrawl.followlinks
+        try:
+            hash = {'follower': follower, 'friend': friend}
+            table.insert(hash)
+        except:
+            pass #TODO: Revise!
