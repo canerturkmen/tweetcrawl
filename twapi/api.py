@@ -32,5 +32,10 @@ class TwCrawlAPI:
         elif type(user) is int:
             result = self._api.GetFollowers(user_id=user)
 
-        return str()
+        result = [u.AsDict() for u in result]
+
+        return len(result)
+
+    def getRateLimitStatus(self):
+        return self._api.GetRateLimitStatus()
 
