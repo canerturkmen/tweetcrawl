@@ -1,2 +1,2 @@
-python-twitter
-pymongo
+python-twitter==1.0
+pymongo>=2.5.0

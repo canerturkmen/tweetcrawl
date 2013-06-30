@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, collection
 from config import MONGODB_HOST, MONGODB_PORT
 import twitter
 
