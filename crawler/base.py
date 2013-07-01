@@ -31,33 +31,37 @@ class BaseCrawler:
         for t in threads:
             t.start()
 
-
-
     def crawl(self):
-        currentId = 20505706
-        self._logger.info("Initializing run for BaseCrawler")
-        try:
-            followers = self._api.getUserFollowers(currentId)
-#             print self._api.getRateLimitStatus()
-            for user_object in followers:
-                user_dict = user_object.AsDict()
-                self._db.persistUser({key: user_dict[key] for key in USER_FIELDS})
-#                self._db.persistFollowLink(i['id'], currentId)
-#                except:
-#                    self._logger.warning("Error encountered. Possibly index related.")
+        crawl_counter = 0
+        while(True):
+            currentId = 20505706
+            crawl_counter += 1
+            self._logger.info("Base crawler iteration initializing: iter no %s" % crawl_counter)
 
-        except TwitterError as e:
-            self._logger.error("TwitterError encountered.")
-            self._logger.error("Print StackTrace : \n %s" % traceback.format_exc())
+            try:
+                followers = self._api.getUserFollowers(currentId)
+    #             print self._api.getRateLimitStatus()
+                for user_object in followers:
+                    user_dict = user_object.AsDict()
+                    user_dict = {key: user_dict.get(key) for key in USER_FIELDS}
+                    user_dict['timeline_crawled'] = False
+                    self._db.persistUser(user_dict)
+                    self._db.persistFollowLink(user_dict['id'], currentId)
 
-#        except:
-#            self._logger.critical("Error encountered.")
-#            sys.exit()
+            except TwitterError as e:
+                if(e[0][0]['code'] == 88):
+                    self._logger.warning("Base Crawler main thread encountered Rate Limit error")
+                else:
+                    self._logger.error("Base Crawler main thread: Unexpected TwitterError encountered.")
+                    self._logger.error("Printing StackTrace : \n %s" % traceback.format_exc())
 
+            except:
+                self._logger.error("Base Crawler main thread encountered unexpected error.")
+                self._logger.error("Printing StackTrace : \n %s" % traceback.format_exc())
 
-        self._logger.info("Sleeping for 1 minute")
-        time.sleep(60) # sleep for 60 seconds
-        self._logger.info("Slept for 1 minute")
+            self._logger.info("Sleeping for 5 minutes")
+            time.sleep(300) # sleep for 60 seconds
+            self._logger.info("Slept for 5 minutes")
 
         self._logger.info("Exiting main thread")
 
@@ -68,6 +72,5 @@ class BaseCrawler:
         """
         self._logger.info("Log daemon is up and running")
         while(True):
-            self._logger.info("App is running")
-            self._logger.info("Tweets count is: %s" % str(self._db.getTablesCounts()))
+            self._logger.info("Database count is: %s" % str(self._db.getTablesCounts()))
             time.sleep(10)

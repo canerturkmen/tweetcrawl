@@ -1,6 +1,8 @@
-from pymongo import MongoClient, collection
+from pymongo import MongoClient
+from pymongo.errors import DuplicateKeyError
 from config import MONGODB_HOST, MONGODB_PORT
 import twitter
+import logging, traceback
 
 class DBConnection:
     """
@@ -24,11 +26,25 @@ class DBConnection:
     def persistUser(cls, user):
         """
         Persists a python-twitter User object in the MongoDB database
-        :type user: twitter.User
+
+        Params:
+        user -- dict with the fields required to persist
         """
         if type(user) is dict:
             table = cls.getInstance().twcrawl.users
-            return table.insert(user)
+            logger = logging.getLogger()
+            insert_result = None
+            try:
+                insert_result = table.insert(user)
+                logger.info("DB Backend persistUser inserted user: %s" % user['id'])
+            except DuplicateKeyError as dke:
+                logger.warning("DB Backend persistUser encountered duplicate key error")
+                pass
+            except:
+                logger.error("DB Backend persistUser encountered unknown error")
+                logger.error("Printing StackTrace : \n %s" % traceback.format_exc())
+
+            return insert_result
         else:
             return False
 
@@ -38,7 +54,6 @@ class DBConnection:
         Persists a python-twitter Status object in the MongoDB database
 
         Params:
-        :type status: twitter.Status
         status: the twitter.Status object to be saved in the database
 
         Returns:

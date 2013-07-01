@@ -21,5 +21,5 @@ ht = db['hashtags']
 
 # create ensureIndex constraints
 
-db.tweets.ensure_index([("status_id", ASCENDING)], unique=True)
-db.users.ensure_index([("user_id", ASCENDING)], unique=True)
+db.tweets.ensure_index([("id", ASCENDING)], unique=True)
+db.users.ensure_index([("id", ASCENDING)], unique=True)
