@@ -2,7 +2,8 @@
 
 ![build status](https://api.travis-ci.org/canerturkmen/tweetcrawl.png "build status")
 
-tweetcrawl is intented as a twitter user, status and follow links crawler that links with Twitter over python-twitter and stores information in a MongoDB instance.
+tweetcrawl is intended as a twitter user, status and follow links crawler that links with Twitter over python-twitter and stores information in a MongoDB instance. As well as a 
+Twitter Streaming API v1.1 client that stores tweets in a MongoDB instance.
 
 Currently, the project is a stub and crawl scheduling will be added in order to manage the rate limits enforced by Twitter.
 

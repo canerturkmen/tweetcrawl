@@ -41,9 +41,9 @@ class BaseRecord():
             tw = kwargs.get("fulldata")
             for field in self._schema.get("fields"):
                 if field == "id":
-                    self._data["_id"] = tw[field]
+                    self._data["_id"] = tw.get(field)
                 else:
-                    self._data[field] = tw[field]
+                    self._data[field] = tw.get(field)
         else:
             for field in self._schema.get("fields"):
                 if field == "id":

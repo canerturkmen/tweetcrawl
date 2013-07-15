@@ -68,7 +68,7 @@ class Streamer():
     def main(self, **kwargs):
         kwargs['delimited'] = 'length'
         self.logger.info("Running streamer, tracking list as follows: %s" % kwargs.get("track"))
-        
+
         url = self.url + "/statuses/filter.json"
         data = self.oauth_request(url, kwargs)
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -91,11 +91,11 @@ class Streamer():
 
                 tw = Tweet(fulldata=update)
                 tw.save()
-                self.logger.info("Added new tweet! %s" % tw._data.get("id"))
+                self.logger.info("Added new tweet! %s" % tw._data.get("_id"))
 
                 u = User(fulldata=update.get("user"))
                 u.save()
-                self.logger.info("Added new user! %s" % u._data.get("id"))
+                self.logger.info("Added new user! %s" % u._data.get("_id"))
 
             else:
                 self.logger.info("Pinging.. streamer::main is waiting for an update")
