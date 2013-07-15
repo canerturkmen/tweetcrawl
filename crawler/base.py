@@ -13,7 +13,7 @@ class BaseCrawler:
                             filename="logs/twcrawl_log_.log",
                             format='%(asctime)-15s %(levelname)s : %(message)s',
                             level=logging.INFO)
-        self._logger = logging.getLogger()
+        self._logger = logging.getLogger(__name__)
         self._db = DBConnection
         self._api = TwCrawlAPI()
 
@@ -40,7 +40,7 @@ class BaseCrawler:
 
             try:
                 followers = self._api.getUserFollowers(currentId)
-    #             print self._api.getRateLimitStatus()
+                print self._api.getRateLimitStatus()
                 for user_object in followers:
                     user_dict = user_object.AsDict()
                     user_dict = {key: user_dict.get(key) for key in USER_FIELDS}
@@ -49,9 +49,10 @@ class BaseCrawler:
                     self._db.persistFollowLink(user_dict['id'], currentId)
 
             except TwitterError as e:
-                if(e[0][0]['code'] == 88):
+                if e[0][0]['code'] == 88:
                     self._logger.warning("Base Crawler main thread encountered Rate Limit error")
                 else:
+                    a
                     self._logger.error("Base Crawler main thread: Unexpected TwitterError encountered.")
                     self._logger.error("Printing StackTrace : \n %s" % traceback.format_exc())
 

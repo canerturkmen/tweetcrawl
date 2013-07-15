@@ -1,3 +1,6 @@
 config.py
 logs/*.*
 *.log
+*.pyc
+.DS_Store
+.idea/
