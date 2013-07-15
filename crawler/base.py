@@ -9,10 +9,6 @@ import threading
 class BaseCrawler:
 
     def __init__(self):
-        logging.basicConfig(#filename="logs/twcrawl_log_%s.log" % datetime.now().strftime("%Y%m%d_%H%M"),
-                            filename="logs/twcrawl_log_.log",
-                            format='%(asctime)-15s %(levelname)s : %(message)s',
-                            level=logging.INFO)
         self._logger = logging.getLogger(__name__)
         self._db = DBConnection
         self._api = TwCrawlAPI()
@@ -52,7 +48,6 @@ class BaseCrawler:
                 if e[0][0]['code'] == 88:
                     self._logger.warning("Base Crawler main thread encountered Rate Limit error")
                 else:
-                    a
                     self._logger.error("Base Crawler main thread: Unexpected TwitterError encountered.")
                     self._logger.error("Printing StackTrace : \n %s" % traceback.format_exc())
 
