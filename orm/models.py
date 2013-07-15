@@ -25,7 +25,7 @@ class Tweet(BaseRecord):
     """
 
     _schema = {"fields": ["created_at", "id", "id_str", "text", "user", "geo", "coordinates", "place",
-                          "retweeted","retweet_count" "favorite_count", "entities", "favorited", "retweeted", "lang"]}
+                          "retweeted","retweet_count", "favorite_count", "entities", "favorited", "retweeted", "lang"]}
 
     def __init__(self, **kwargs):
         self.initialize(kwargs)
