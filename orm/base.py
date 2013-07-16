@@ -40,17 +40,24 @@ class BaseRecord():
         if kwargs.has_key("fulldata"):
             tw = kwargs.get("fulldata")
             for field in self._schema.get("fields"):
-                if field == "id":
-                    self._data["_id"] = tw.get(field)
-                else:
-                    self._data[field] = tw.get(field)
+                try:
+                    if field == "id":
+                        self._data["_id"] = tw.get(field)
+                    else:
+                        self._data[field] = tw.get(field)
+                except:
+                    self._logger.error("Error encountered while trying to retreive from tweet")
+                    self._logger.error("Printing traceback: %s" % traceback.format_exc())
         else:
             for field in self._schema.get("fields"):
-                if field == "id":
-                    self._data["_id"] = kwargs.get(field)
-                else:
-                    self._data[field] = kwargs.get(field)
-
+                try:
+                    if field == "id":
+                        self._data["_id"] = kwargs.get(field)
+                    else:
+                        self._data[field] = kwargs.get(field)
+                except:
+                    self._logger.error("Error encountered while trying to retreive from tweet")
+                    self._logger.error("Printing traceback: %s" % traceback.format_exc())
     def save(self, **kwargs):
         try:
             self._collection.insert(self._data)
